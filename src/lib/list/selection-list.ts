@@ -120,7 +120,16 @@ export class MatListOption extends _MatListOptionMixinBase
   @Input() checkboxPosition: 'before' | 'after' = 'after';
 
   /** Value of the option */
-  @Input() value: any;
+  @Input()
+  get value(): any { return this._value; }
+  set value(newValue: any) {
+    if (this.selected && newValue !== this.value) {
+      this.selected = false;
+    }
+
+    this._value = newValue;
+  }
+  private _value: any;
 
   /** Whether the option is disabled. */
   @Input()
@@ -272,7 +281,7 @@ export class MatListOption extends _MatListOptionMixinBase
   moduleId: module.id,
   selector: 'mat-selection-list',
   exportAs: 'matSelectionList',
-  inputs: ['disabled', 'disableRipple', 'tabIndex'],
+  inputs: ['disableRipple'],
   host: {
     'role': 'listbox',
     '[tabIndex]': 'tabIndex',
